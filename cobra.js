@@ -13,7 +13,21 @@ function setup() {
         's': createVector(0,1),
         'd': createVector(1,0),
      };
-    
+    alimento = {
+        x: Math.floor(random(0,tamanho/escala))* escala,
+        y: Math.floor(random(0,tamanho/escala))* escala,
+        cor: color(0,0,255),
+        comeu: function() {
+            this.x = Math.floor(random(0,tamanho/escala))* escala;
+            this.y = Math.floor(random(0,tamanho/escala))* escala; 
+        },
+        desenha: function() {
+            fill(this.cor);
+            rect(this.x,this.y,escala,escala);
+            
+        },
+    }
+        
     cobrinha = {
         cor: color(255,0,0),
         corpo: [],
@@ -37,11 +51,11 @@ function setup() {
             }
         },
         anda: function() {
+            if (this.tempDir) this.setDir(this.tempDir)
             q= this.corpo[0].copy();
             q.add(this.dir);
             this.corpo.unshift(q);
             
-            this.corpo.splice(-1,1);
             
             if (this.corpo[0].x < 0) {
                 this.corpo[0].x = tamanho - escala;
@@ -62,6 +76,11 @@ function setup() {
                 this.cor = color(0,255,0);
               }
             }
+            if (this.corpo[0].x == alimento.x && this.corpo[0].y == alimento.y){
+                alimento.comeu();
+            }else{
+                this.corpo.splice(-1,1);
+            }
         },
         setDir : function(d) {
             angulo = degrees(p5.Vector.angleBetween(this.dir,d))
@@ -78,6 +97,7 @@ function setup() {
 function draw() {
     background(0);
     cobrinha.desenha();
+    alimento.desenha();
 }
 
 function keyPressed() {
@@ -87,7 +107,7 @@ function keyPressed() {
         case 's':
         case 'd':
             d = dirs[key.toLowerCase()];
-            cobrinha.setDir(d);
+            cobrinha.tempDir = d;
             break;
     }
 } 
