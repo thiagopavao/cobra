@@ -1,12 +1,14 @@
 tamanho = 600;
 escala = 20;
+var img;
 
 
 
 
 function setup() {
     createCanvas(tamanho,tamanho);
-    frameRate(70);
+    img = loadImage('metalica.jpg');
+    frameRate(200);
     dirs = {
         'a': createVector(-1,0),
         'w': createVector(0,-1),
@@ -95,7 +97,7 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    image(img, 0, 0, tamanho, tamanho);
     cobrinha.desenha();
     alimento.desenha();
 }
